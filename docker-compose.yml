@@ -1,0 +1,22 @@
+services:
+  localstack:
+    container_name: "localstack_main"
+    image: localstack/localstack:latest
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=lambda,apigateway,s3,dynamodb,iam,sts
+      - DEBUG=1
+      - LAMBDA_EXECUTOR=local
+      - PERSISTENCE=0
+      - LAMBDA_RUNTIME_ENVIRONMENT_TIMEOUT=60
+      - LAMBDA_DOCKER_NETWORK=host
+    volumes:
+      - "${TMPDIR:-/tmp}/localstack:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - localstack
+
+networks:
+  localstack:
+    driver: bridge
